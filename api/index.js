@@ -12,7 +12,7 @@ app.use('/', serviceRoutes);
 // Start the Express server
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`API server is running on port ${PORT}`);
+  console.log(`API server  is running on port ${PORT}`);
 });
 
 module.exports = app;
