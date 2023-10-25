@@ -1,3 +1,0 @@
-# Ignore package lock and node modules
-package-lock.json
-node_modules/
