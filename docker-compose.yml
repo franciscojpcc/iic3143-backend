@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./ # The path in the machine that have the files, in this case root
+      dockerfile: Dockerfile-api # The name of the Dockerfile definition
+    # container_name: api   # The name of the container, if not defined it will be
+    restart: unless-stopped
+    container_name: api
+    volumes:
+      - ./api:/app/api # To copy changes in the local machine to the container.
+    ports:
+      - "3000:3000" # To expose the app to the machine localhost (machine-port:container:port)
+    networks:
+      - app-network # Connect the app to the network, in this case to use the database
+
+
+networks:
+  app-network: # Define the app-network network
+    driver: bridge # Use the default bridge driver
