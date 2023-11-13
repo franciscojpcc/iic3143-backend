@@ -1,39 +1,37 @@
 const User = require("../db/models/user");
+const userService = require("../services/userService");
 
 exports.createUser = async (req, res) => {
   try {
     const userData = req.body;
-    console.log("USER DATA:", userData);
-    const user = await User.findOne({ where: { username: userData.username } });
-    if (!user) {
-      const newUser = await User.create({
-        username: userData.username,
-        token: userData.token,
-      });
-      res.status(201).json(newUser);
+    const result = await userService.createUser(userData);
+
+    if (result.success) {
+      res.status(201).json(result.data);
     } else {
-      res.message = "User already exists";
-      res.status(200).json(user);
+      console.log("User already exists");
+      res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error creating user:", error);
     res.status(500).json({ message: "Error creating user" });
   }
 };
 
 exports.getProfile = async (req, res) => {
   const username = req.query.username;
-  console.log("USERNAME:", username);
   try {
-    const userProfile = await User.findOne({
-      where: {
-        username: username,
-      },
-    });
-    res.status(200).json({ info: userProfile });
+    const result = await userService.findUserByUsername(username);
+
+    if (result.success) {
+      res.status(200).json({ info: result.data });
+    } else {
+      console.error("Error getting user information:", result.error);
+      res.status(result.statusCode).json({ message: result.message });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error getting user information" });
+    console.error("Unexpected error:", error);
+    res.status(500).json({ message: "Unexpected error" });
   }
 };
 
@@ -41,44 +39,39 @@ exports.updateProfile = async (req, res) => {
   const username = req.query.username;
   const newUsername = req.body.username;
   const newEmail = req.body.email;
-  console.log("USER NICK:", username);
+
   try {
-    const userProfile = await User.findOne({
-      where: {
-        username: username,
-      },
-    });
-    if (userProfile) {
-      userProfile.username = newUsername;
-      userProfile.email = newEmail;
-      await userProfile.save();
-      res.status(200).json({ info: userProfile });
+    const result = await userService.updateUserProfile(
+      username,
+      newUsername,
+      newEmail
+    );
+
+    if (result.success) {
+      res.status(200).json({ info: result.data });
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error getting user information" });
+    console.error("Unexpected error:", error);
+    res.status(500).json({ message: "Unexpected error" });
   }
 };
 
 exports.deleteProfile = async (req, res) => {
   const username = req.query.username;
-  console.log("USER NICK:", username);
+
   try {
-    const userProfile = await User.findOne({
-      where: {
-        username: username,
-      },
-    });
-    if (userProfile) {
-      await userProfile.destroy();
-      res.status(200).json({ message: "User deleted" });
+    const result = await userService.deleteUserProfile(username);
+
+    if (result.success) {
+      res.status(200).json({ message: result.message });
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error getting user information" });
+    console.error("Unexpected error:", error);
+    res.status(500).json({ message: "Unexpected error" });
   }
 };
+
