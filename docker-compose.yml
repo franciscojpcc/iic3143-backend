@@ -14,8 +14,33 @@ services:
       - "3000:3000" # To expose the app to the machine localhost (machine-port:container:port)
     networks:
       - app-network # Connect the app to the network, in this case to use the database
+    depends_on: # Build dependencies in case one containers needs another to be builded first
+      - db # To build after the database
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+
+  db:
+    image: postgres:11.5-alpine # Use the official Postgres image
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${DATABASE_USER} # Set the default Postgres user
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD} # Set the default Postgres password
+      POSTGRES_DB: ${DATABASE_NAME} # Set the default Postgres database
+    ports:
+      - "5432:5432" # Map the default Postgres port to the host machine
+    networks:
+      - app-network # Connect the Postgres container to the app-network
+    volumes:
+      # To persist the data in the database we have a volume that persist after container deletion
+      # and copy the files from the container to the volume.
+      - db-volume:/var/lib/postgresql/data # Persist database data
 
 
 networks:
   app-network: # Define the app-network network
     driver: bridge # Use the default bridge driver
+
+volumes: # All the named volumes needed to persist data after container deletion
+  db-volume:
