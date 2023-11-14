@@ -43,10 +43,6 @@ const User = sequelize.define("User", {
     allowNull: false,
   },
 
-  token: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
 });
 
 module.exports = User;
