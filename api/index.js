@@ -1,8 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const populateUsers = require("./seeds/userSeeds");
+/* eslint-disable no-console */
+const express = require('express');
+const cors = require('cors');
+const populateUsers = require('./seeds/userSeeds');
 
-const sequelize = require("./db/index");
+const sequelize = require('./db/index');
 
 const app = express();
 const PORT = 3000;
@@ -14,23 +15,22 @@ app.use(cors());
 sequelize
   .sync()
   .then(async () => {
-    console.log("Connected to database and synchronized models");
+    console.log('Connected to database and synchronized models');
 
     // Populate users
     await populateUsers.up(sequelize.getQueryInterface(), sequelize.constructor);
-    console.log("Users populated successfully");
-    
+    console.log('Users populated successfully');
   })
   .catch((error) => {
-    console.error("Error syncing models:", error);
+    console.error('Error syncing models:', error);
   });
 
 // Import and use the app routes
-const serviceRoutes = require("./routes/serviceRoutes");
-const usersRoutes = require("./routes/userRoutes");
+const serviceRoutes = require('./routes/serviceRoutes');
+const usersRoutes = require('./routes/userRoutes');
 
-app.use("/user", usersRoutes);
-app.use("/", serviceRoutes);
+app.use('/user', usersRoutes);
+app.use('/', serviceRoutes);
 
 // Start the Express server
 app.listen(PORT, () => {

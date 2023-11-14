@@ -8,9 +8,4 @@ module.exports = {
     node: true,
     jest: true, // Enable the Jest environment
   },
-  extends: ["eslint:recommended", "prettier"],
-  parserOptions: {
-    ecmaVersion: "latest"
-  },
-  rules: {}
 };

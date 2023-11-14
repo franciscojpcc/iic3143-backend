@@ -1,9 +1,10 @@
-const User = require("../db/models/user");
+/* eslint-disable no-console */
+const User = require('../db/models/user');
 
-checkUserAlreadyExists = async (username) => {
+const checkUserAlreadyExists = async (username) => {
   const user = await User.findOne({
     where: {
-      username: username,
+      username,
     },
   });
   return !!user;
@@ -26,17 +27,16 @@ exports.createUser = async (userData) => {
       });
 
       return { success: true, data: newUser };
-    } else {
-      console.log("User already exists");
-      return {
-        success: false,
-        statusCode: 409,
-        message: "User already exists",
-      };
     }
+    console.log('User already exists');
+    return {
+      success: false,
+      statusCode: 409,
+      message: 'User already exists',
+    };
   } catch (error) {
-    console.error("Error creating user:", error);
-    return { success: false, statusCode: 500, message: "Error creating user" };
+    console.error('Error creating user:', error);
+    return { success: false, statusCode: 500, message: 'Error creating user' };
   }
 };
 
@@ -44,7 +44,7 @@ exports.findUserByUsername = async (username) => {
   try {
     const user = await User.findOne({
       where: {
-        username: username,
+        username,
       },
     });
 
@@ -52,7 +52,7 @@ exports.findUserByUsername = async (username) => {
       return {
         success: false,
         statusCode: 404,
-        message: "User not found",
+        message: 'User not found',
       };
     }
 
@@ -61,12 +61,12 @@ exports.findUserByUsername = async (username) => {
       data: user,
     };
   } catch (error) {
-    console.error("Error finding user:", error);
+    console.error('Error finding user:', error);
     return {
       success: false,
       statusCode: 500,
-      message: "Error finding user",
-      error: error,
+      message: 'Error finding user',
+      error,
     };
   }
 };
@@ -75,7 +75,7 @@ exports.updateUserProfile = async (username, newUsername, newEmail) => {
   try {
     const userProfile = await User.findOne({
       where: {
-        username: username,
+        username,
       },
     });
 
@@ -88,20 +88,19 @@ exports.updateUserProfile = async (username, newUsername, newEmail) => {
         success: true,
         data: userProfile,
       };
-    } else {
-      return {
-        success: false,
-        statusCode: 404,
-        message: "User not found",
-      };
     }
+    return {
+      success: false,
+      statusCode: 404,
+      message: 'User not found',
+    };
   } catch (error) {
-    console.error("Error updating user profile:", error);
+    console.error('Error updating user profile:', error);
     return {
       success: false,
       statusCode: 500,
-      message: "Error updating user profile",
-      error: error,
+      message: 'Error updating user profile',
+      error,
     };
   }
 };
@@ -110,7 +109,7 @@ exports.deleteUserProfile = async (username) => {
   try {
     const userProfile = await User.findOne({
       where: {
-        username: username,
+        username,
       },
     });
 
@@ -119,22 +118,21 @@ exports.deleteUserProfile = async (username) => {
 
       return {
         success: true,
-        message: "User deleted",
-      };
-    } else {
-      return {
-        success: false,
-        statusCode: 404,
-        message: "User not found",
+        message: 'User deleted',
       };
     }
+    return {
+      success: false,
+      statusCode: 404,
+      message: 'User not found',
+    };
   } catch (error) {
-    console.error("Error deleting user profile:", error);
+    console.error('Error deleting user profile:', error);
     return {
       success: false,
       statusCode: 500,
-      message: "Error deleting user profile",
-      error: error,
+      message: 'Error deleting user profile',
+      error,
     };
   }
 };

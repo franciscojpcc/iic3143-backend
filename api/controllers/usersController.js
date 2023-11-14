@@ -1,5 +1,5 @@
-const User = require("../db/models/user");
-const userService = require("../services/userService");
+/* eslint-disable no-console */
+const userService = require('../services/userService');
 
 exports.createUser = async (req, res) => {
   try {
@@ -9,34 +9,34 @@ exports.createUser = async (req, res) => {
     if (result.success) {
       res.status(201).json(result.data);
     } else {
-      console.log("User already exists");
+      console.log('User already exists');
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ message: "Error creating user" });
+    console.error('Error creating user:', error);
+    res.status(500).json({ message: 'Error creating user' });
   }
 };
 
 exports.getProfile = async (req, res) => {
-  const username = req.query.username;
+  const { username } = req.query;
   try {
     const result = await userService.findUserByUsername(username);
 
     if (result.success) {
       res.status(200).json({ info: result.data });
     } else {
-      console.error("Error getting user information:", result.error);
+      console.error('Error getting user information:', result.error);
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
 
 exports.updateProfile = async (req, res) => {
-  const username = req.query.username;
+  const { username } = req.query;
   const newUsername = req.body.username;
   const newEmail = req.body.email;
 
@@ -44,7 +44,7 @@ exports.updateProfile = async (req, res) => {
     const result = await userService.updateUserProfile(
       username,
       newUsername,
-      newEmail
+      newEmail,
     );
 
     if (result.success) {
@@ -53,13 +53,13 @@ exports.updateProfile = async (req, res) => {
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
 
 exports.deleteProfile = async (req, res) => {
-  const username = req.query.username;
+  const { username } = req.query;
 
   try {
     const result = await userService.deleteUserProfile(username);
@@ -70,8 +70,7 @@ exports.deleteProfile = async (req, res) => {
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
-
