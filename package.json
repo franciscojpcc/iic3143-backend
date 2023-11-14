@@ -10,7 +10,7 @@
     "lint-fix": "eslint --fix ./api api/index.js",
     "migrate-undo": "yarn sequelize db:migrate:undo:all",
     "migrate": "yarn sequelize db:migrate",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "seeds": "yarn sequelize db:seed:all"
   },
   "author": "Your Name",
