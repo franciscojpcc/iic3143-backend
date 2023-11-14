@@ -17,7 +17,6 @@ describe("User API", () => {
       role: "user",
       username: "john_doe",
       password: "password123",
-      token: "token123",
     };
 
     const response = await supertest(app)

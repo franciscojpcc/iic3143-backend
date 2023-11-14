@@ -23,7 +23,6 @@ exports.createUser = async (userData) => {
         role: userData.role,
         username: userData.username,
         password: userData.password,
-        token: userData.token,
       });
 
       return { success: true, data: newUser };
