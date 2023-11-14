@@ -46,6 +46,6 @@ module.exports = {
         updatedAt: new Date(),
     });
 
-    return queryInterface.bulkInsert('users', usersArray);
+    return queryInterface.bulkInsert("Users", usersArray);
   },
 };
