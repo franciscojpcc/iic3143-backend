@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 const express = require('express');
 const cors = require('cors');
-const populateUsers = require('./seeds/userSeeds');
 
-const sequelize = require('./db/index');
+const db = require('../db/models/index');
 
 const app = express();
 const PORT = 3000;
@@ -12,14 +11,10 @@ app.use(express.json()); // Parse JSON requests
 app.use(cors());
 
 // Sync the model with the database
-sequelize
+db.sequelize
   .sync()
   .then(async () => {
     console.log('Connected to database and synchronized models');
-
-    // Populate users
-    await populateUsers.up(sequelize.getQueryInterface(), sequelize.constructor);
-    console.log('Users populated successfully');
   })
   .catch((error) => {
     console.error('Error syncing models:', error);

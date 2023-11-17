@@ -16,18 +16,23 @@ services:
       - app-network # Connect the app to the network, in this case to use the database
     depends_on: # Build dependencies in case one containers needs another to be builded first
       - db # To build after the database
+    env_file:
+      - .env
     environment:
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME_DEV}
+      DATABASE_USER: ${DATABASE_USERNAME_DEV}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD_DEV}
+      HOST: db
 
   db:
     image: postgres:11.5-alpine # Use the official Postgres image
     container_name: postgres-db
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: ${DATABASE_USER} # Set the default Postgres user
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD} # Set the default Postgres password
-      POSTGRES_DB: ${DATABASE_NAME} # Set the default Postgres database
+      POSTGRES_USER: ${DATABASE_USERNAME_DEV} # Set the default Postgres user
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD_DEV} # Set the default Postgres password
+      POSTGRES_DB: ${DATABASE_NAME_DEV} # Set the default Postgres database
     ports:
       - "5432:5432" # Map the default Postgres port to the host machine
     networks:
