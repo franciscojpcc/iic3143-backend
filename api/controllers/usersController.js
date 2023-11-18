@@ -1,9 +1,6 @@
 /* eslint-disable no-console */
-const express = require('express');
 const userService = require('../services/userService');
-const { generateToken, verifyToken } = require('../services/auth');
-
-const router = express();
+const { generateToken } = require('../services/auth');
 
 exports.createUser = async (req, res) => {
   try {
@@ -27,8 +24,6 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ message: 'Error creating user' });
   }
 };
-
-router.use(verifyToken);
 
 exports.getProfile = async (req, res) => {
   const { username } = req.query;

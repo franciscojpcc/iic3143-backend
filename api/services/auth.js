@@ -14,12 +14,13 @@ function generateToken(user) {
 // function to verify token
 const verifyToken = (req, res, next) => {
   const token2 = req.headers.authorization;
-  // sacar bearer a token
-  const token = token2.split(' ')[1];
 
-  if (!token) {
+  if (!token2) {
     return res.status(403).json({ message: 'Token no proporcionado' });
   }
+
+  // sacar bearer a token
+  const token = token2.split(' ')[1];
 
   jwtgenerator.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
