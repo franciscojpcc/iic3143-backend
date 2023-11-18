@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
+const express = require('express');
 const userService = require('../services/userService');
+const { generateToken, verifyToken } = require('../services/auth');
+
+const router = express();
 
 exports.createUser = async (req, res) => {
   try {
@@ -7,7 +11,13 @@ exports.createUser = async (req, res) => {
     const result = await userService.createUser(userData);
 
     if (result.success) {
-      res.status(201).json(result.data);
+      // Generate token and return it to the client
+      const token = await generateToken(result.data);
+      const body = {
+        access_token: token,
+        token_type: 'Bearer',
+      };
+      res.status(201).json(body);
     } else {
       console.log('User already exists');
       res.status(result.statusCode).json({ message: result.message });
@@ -17,6 +27,8 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ message: 'Error creating user' });
   }
 };
+
+router.use(verifyToken);
 
 exports.getProfile = async (req, res) => {
   const { username } = req.query;

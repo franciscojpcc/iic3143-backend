@@ -23,9 +23,13 @@ db.sequelize
 // Import and use the app routes
 const serviceRoutes = require('./routes/serviceRoutes');
 const usersRoutes = require('./routes/userRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
+const { verifyToken } = require('./services/auth');
 
+app.use('/session', sessionRoutes);
 app.use('/user', usersRoutes);
-app.use('/', serviceRoutes);
+app.use(verifyToken);
+app.use('/service', serviceRoutes);
 
 // Start the Express server
 app.listen(PORT, () => {
