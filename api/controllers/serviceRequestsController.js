@@ -1,4 +1,4 @@
-// const serviceRequestService = require('../services/serviceRequestService');
+const serviceRequestService = require('../services/serviceRequestService');
 
 exports.createRequest = async (req, res) => {
   try {
@@ -56,7 +56,7 @@ exports.updateRequestById = async (req, res) => {
   try {
     const result = await serviceRequestService.updateRequestById(
       requestId,
-      updateRequest
+      updateRequest,
     );
 
     if (result.success) {
