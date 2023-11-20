@@ -12,7 +12,7 @@
     "migrate": "yarn sequelize db:migrate",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --detectOpenHandles --forceExit",
     "pretest": "cross-env NODE_ENV=test yarn db:reset",
-    "db:reset": "yarn sequelize-cli db:drop && yarn sequelize-cli db:create && yarn migrate && yarn seeds",
+    "db:reset": "yarn sequelize-cli db:create && yarn migrate && yarn seeds",
     "seeds": "yarn sequelize db:seed:all"
   },
   "author": "Your Name",
