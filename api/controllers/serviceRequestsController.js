@@ -1,4 +1,4 @@
-const serviceRequestService = require("../services/serviceRequestService");
+// const serviceRequestService = require('../services/serviceRequestService');
 
 exports.createRequest = async (req, res) => {
   try {
@@ -8,12 +8,12 @@ exports.createRequest = async (req, res) => {
     if (result.success) {
       res.status(201).json(result.data);
     } else {
-      console.log("Service Request already exists");
+      console.log('Service Request already exists');
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Error creating service request:", error);
-    res.status(500).json({ message: "Error creating service request" });
+    console.error('Error creating service request:', error);
+    res.status(500).json({ message: 'Error creating service request' });
   }
 };
 
@@ -25,12 +25,12 @@ exports.getRequestById = async (req, res) => {
     if (result.success) {
       res.status(200).json({ info: result.data });
     } else {
-      console.error("Error getting Service request information:", result.error);
+      console.error('Error getting Service request information:', result.error);
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
 
@@ -41,12 +41,12 @@ exports.getRequests = async (req, res) => {
     if (result.success) {
       res.status(200).json({ info: result.data });
     } else {
-      console.error("Error getting Services requestinformation:", result.error);
+      console.error('Error getting Services requestinformation:', result.error);
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
 
@@ -65,8 +65,8 @@ exports.updateRequestById = async (req, res) => {
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
 
@@ -81,7 +81,7 @@ exports.deleteRequestById = async (req, res) => {
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ message: "Unexpected error" });
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
   }
 };
