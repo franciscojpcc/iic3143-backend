@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../index");
-
+const Service = require("./service");
+const ServiceRequest = require("./serviceRequest");
 const User = sequelize.define("User", {
   name: {
     type: DataTypes.STRING,
@@ -42,7 +43,9 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-
 });
+
+User.hasMany(Service, { as: "Service", foreignKey: "supplierId" });
+User.hasMany(ServiceRequest, { as: "ServiceRequest", foreignKey: "userId" });
 
 module.exports = User;
