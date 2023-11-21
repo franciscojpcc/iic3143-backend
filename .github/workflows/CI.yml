@@ -11,9 +11,6 @@ jobs:
     name: Test and Lint
     runs-on: ubuntu-latest
 
-    env:
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-
     services:
       postgres:
         image: postgres:latest
@@ -62,4 +59,5 @@ jobs:
           DATABASE_NAME_TEST: "test_db"
           DATABASE_USERNAME_TEST: "postgres"
           DATABASE_PASSWORD_TEST: "postgres"
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: yarn test
