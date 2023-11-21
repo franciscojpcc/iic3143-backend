@@ -11,6 +11,9 @@ jobs:
     name: Test and Lint
     runs-on: ubuntu-latest
 
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
     services:
       postgres:
         image: postgres:latest
@@ -23,6 +26,10 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+      - name: Print JWT_SECRET
+        run: |
+          echo "JWT_SECRET is $JWT_SECRET"
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -59,5 +66,4 @@ jobs:
           DATABASE_NAME_TEST: "test_db"
           DATABASE_USERNAME_TEST: "postgres"
           DATABASE_PASSWORD_TEST: "postgres"
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: yarn test
