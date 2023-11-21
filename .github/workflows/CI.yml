@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JWT_SECRET: ${{ github.env.JWT_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     services:
       postgres:
@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Print JWT_SECRET
         run: |
-          echo "JWT_SECRET is $JWT_SECRET"
+          echo "JWT_SECRET is ${{ secrets.JWT_SECRET }}"
 
       - name: Checkout code
         uses: actions/checkout@v3
