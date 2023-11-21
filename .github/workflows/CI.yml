@@ -35,7 +35,7 @@ jobs:
         run: sleep 10s
 
       - name: Create PostgreSQL database
-        run: createdb -h localhost -U postgres test_db
+        run: createdb -h localhost -U postgres p postgres test_db
 
       - name: Install dependencies
         run: yarn install
