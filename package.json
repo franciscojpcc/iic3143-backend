@@ -11,7 +11,8 @@
     "migrate-undo": "yarn sequelize db:migrate:undo:all",
     "migrate": "yarn sequelize db:migrate",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --detectOpenHandles --forceExit",
-    "seeds": "yarn sequelize db:seed:all"
+    "seeds": "yarn sequelize db:seed:all",
+    "migrate-test": "cross-env NODE_ENV=test yarn sequelize db:migrate"
   },
   "author": "Your Name",
   "license": "MIT",

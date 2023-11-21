@@ -41,11 +41,11 @@ jobs:
         env:
           HOST: "localhost"
           DB_PORT: "5432"
-          DATABASE_NAME_DEV: "test_db"
-          DATABASE_USERNAME_DEV: "postgres"
-          DATABASE_PASSWORD_DEV: "postgres"
+          DATABASE_NAME_TEST: "test_db"
+          DATABASE_USERNAME_TEST: "postgres"
+          DATABASE_PASSWORD_TEST: "postgres"
         run: |
-          yarn migrate
+          yarn migrate-test
           # Optionally, you can seed the database if needed:
           # yarn sequelize db:seed:all
 
@@ -56,7 +56,7 @@ jobs:
         env:
           HOST: "localhost"
           DB_PORT: "5432"
-          DATABASE_NAME_DEV: "test_db"
-          DATABASE_USERNAME_DEV: "postgres"
-          DATABASE_PASSWORD_DEV: "postgres"
+          DATABASE_NAME_TEST: "test_db"
+          DATABASE_USERNAME_TEST: "postgres"
+          DATABASE_PASSWORD_TEST: "postgres"
         run: yarn test
