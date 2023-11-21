@@ -9,6 +9,17 @@ jobs:
     name: Test and Lint
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -18,11 +29,31 @@ jobs:
         with:
           node-version: "16"
 
+      - name: Wait for PostgreSQL to be ready
+        run: sleep 10s
+
+      - name: Create PostgreSQL database
+        run: createdb -h localhost -U postgres test_db
+
       - name: Install dependencies
         run: yarn install
+
+      - name: Setup PostgreSQL
+        run: |
+          yarn migrate
+          # Optionally, you can seed the database if needed:
+          # yarn sequelize db:seed:all
 
       - name: Lint
         run: yarn lint
 
       - name: Test
         run: yarn test
+        env:
+          NODE_ENV: "test"
+          DB_DIALECT: "postgres"
+          DB_HOST: "localhost"
+          DB_PORT: "5432"
+          DB_NAME_TESTING: "test_db"
+          DB_USERNAME: "postgres"
+          DB_PASSWORD: "postgres"
