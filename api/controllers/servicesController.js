@@ -21,7 +21,6 @@ exports.getServiceById = async (req, res) => {
   const serviceId = req.params.id;
   try {
     const result = await serviceService.findServiceById(serviceId);
-
     if (result.success) {
       res.status(200).json({ info: result.data });
     } else {
