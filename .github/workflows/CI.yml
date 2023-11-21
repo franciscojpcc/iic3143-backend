@@ -11,6 +11,9 @@ jobs:
     name: Test and Lint
     runs-on: ubuntu-latest
 
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
     services:
       postgres:
         image: postgres:latest
