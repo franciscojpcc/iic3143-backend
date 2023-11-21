@@ -55,10 +55,8 @@ jobs:
       - name: Test
         run: yarn test
         env:
-          NODE_ENV: "test"
-          DB_DIALECT: "postgres"
-          DB_HOST: "localhost"
+          HOST: "localhost"
           DB_PORT: "5432"
-          DB_NAME_TESTING: "test_db"
-          DB_USERNAME: "postgres"
-          DB_PASSWORD: "postgres"
+          DATABASE_NAME_TEST: "test_db"
+          DATABASE_USERNAME_DEV: "postgres"
+          DATABASE_PASSWORD_DEV: "postgres"
