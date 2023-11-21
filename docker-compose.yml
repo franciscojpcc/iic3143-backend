@@ -23,6 +23,7 @@ services:
       DATABASE_USER: ${DATABASE_USERNAME_DEV}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD_DEV}
       HOST: db
+      JWT_SECRET: ${JWT_SECRET}
 
   db:
     image: postgres:11.5-alpine # Use the official Postgres image
