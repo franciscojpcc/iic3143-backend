@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs');
 
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 const PASSWORD_SALT_ROUNDS = 10;
 
@@ -16,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
       // define association here
+      User.hasMany(models.Service, {
+        foreignKey: 'supplierId',
+      });
+      User.hasMany(models.ServiceRequest, {
+        foreignKey: 'userId',
+      });
     }
 
     async checkPassword(password) {
