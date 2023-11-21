@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_SECRET: ${{ github.env.JWT_SECRET }}
 
     services:
       postgres:
