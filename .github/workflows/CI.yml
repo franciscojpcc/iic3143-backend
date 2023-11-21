@@ -53,10 +53,10 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test
         env:
           HOST: "localhost"
           DB_PORT: "5432"
           DATABASE_NAME_DEV: "test_db"
           DATABASE_USERNAME_DEV: "postgres"
           DATABASE_PASSWORD_DEV: "postgres"
+        run: yarn test
