@@ -12,7 +12,8 @@
     "migrate": "yarn sequelize db:migrate",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --detectOpenHandles --forceExit",
     "seeds": "yarn sequelize db:seed:all",
-    "migrate-test": "cross-env NODE_ENV=test yarn sequelize db:migrate"
+    "migrate-test": "cross-env NODE_ENV=test yarn sequelize db:migrate",
+    "migrate-and-seed": "yarn migrate && yarn seeds"
   },
   "author": "Your Name",
   "license": "MIT",
