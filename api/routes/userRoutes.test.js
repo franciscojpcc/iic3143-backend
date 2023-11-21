@@ -14,6 +14,6 @@ describe('USER /create', () => {
       password: 'test',
     });
     expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('username');
+    expect(res.body).toHaveProperty('access_token');
   });
 });

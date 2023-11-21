@@ -12,18 +12,21 @@
     "migrate": "yarn sequelize db:migrate",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --detectOpenHandles --forceExit",
     "seeds": "yarn sequelize db:seed:all",
-    "migrate-test": "cross-env NODE_ENV=test yarn sequelize db:migrate"
+    "migrate-test": "cross-env NODE_ENV=test yarn sequelize db:migrate",
+    "migrate-and-seed": "yarn migrate && yarn seeds"
   },
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "eslint": "^8.52.0",
     "express": "^4.18.2",
     "jest": "^29.7.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
     "prettier": "^3.0.3",
