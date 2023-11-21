@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const User = require('../db/models/user');
+const { User } = require('../../db/models');
 
 const checkUserAlreadyExists = async (username) => {
   const user = await User.findOne({

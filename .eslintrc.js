@@ -2,6 +2,7 @@ module.exports = {
   extends: 'airbnb',
   rules: {
     'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   env: {
     browser: true,
