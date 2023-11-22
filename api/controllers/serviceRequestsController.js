@@ -85,3 +85,39 @@ exports.deleteRequestById = async (req, res) => {
     res.status(500).json({ message: 'Unexpected error' });
   }
 };
+
+exports.getRequestsByUserId = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const result = await serviceRequestService.findRequestsByUserId(userId);
+
+    if (result.success) {
+      res.status(200).json({ info: result.data });
+    } else {
+      console.error('Error getting Service request information:', result.error);
+      res.status(result.statusCode).json({ message: result.message });
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
+  }
+};
+
+exports.getRequestsByProviderId = async (req, res) => {
+  const providerId = req.params.id;
+  try {
+    const result = await serviceRequestService.findRequestsByProviderId(
+      providerId,
+    );
+
+    if (result.success) {
+      res.status(200).json({ info: result.data });
+    } else {
+      console.error('Error getting Service request information:', result.error);
+      res.status(result.statusCode).json({ message: result.message });
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
+  }
+};
