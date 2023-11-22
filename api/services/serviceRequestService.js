@@ -1,4 +1,4 @@
-const { ServiceRequest } = require('../../db/models');
+const { ServiceRequest, Service, User } = require('../../db/models');
 
 exports.createRequest = async (requestData) => {
   try {
@@ -111,4 +111,88 @@ exports.deleteRequestById = async (requestId) => {
       error,
     };
   }
+};
+
+exports.findRequestsByUserId = async (userId) => {
+  const requestsPending = await ServiceRequest.findAll({
+    where: {
+      userId,
+      state: 'pending',
+    },
+    include: {
+      model: Service,
+      as: 'service',
+      include: {
+        model: User,
+        as: 'supplier',
+      },
+    },
+  });
+  const requestsCompleted = await ServiceRequest.findAll({
+    where: {
+      userId,
+      state: 'completed',
+    },
+    include: {
+      model: Service,
+      as: 'service',
+      include: {
+        model: User,
+        as: 'supplier',
+      },
+    },
+  });
+  if (requestsPending || requestsCompleted) {
+    console.log('Requests found');
+    return { success: true, data: { requestsPending, requestsCompleted } };
+  }
+  console.log('Requests not found');
+  return {
+    success: false,
+    statusCode: 404,
+    message: 'requests not found',
+  };
+};
+
+exports.findRequestsByProviderId = async (supplierId) => {
+  const requestsPending = await ServiceRequest.findAll({
+    where: {
+      state: 'pending',
+    },
+    include: [{
+      model: Service,
+      as: 'service',
+      where: {
+        supplierId,
+      },
+    }, {
+      model: User,
+      as: 'user',
+    }],
+  });
+  const requestsCompleted = await ServiceRequest.findAll({
+    where: {
+      state: 'completed',
+    },
+    include: [{
+      model: Service,
+      as: 'service',
+      where: {
+        supplierId,
+      },
+    }, {
+      model: User,
+      as: 'user',
+    }],
+  });
+  if (requestsPending || requestsCompleted) {
+    console.log('Requests found');
+    return { success: true, data: { requestsPending, requestsCompleted } };
+  }
+  console.log('Requests not found');
+  return {
+    success: false,
+    statusCode: 404,
+    message: 'requests not found',
+  };
 };
