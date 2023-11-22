@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./ # The path in the machine that have the files, in this case root
+      dockerfile: Dockerfile-api # The name of the Dockerfile definition
+    # container_name: api   # The name of the container, if not defined it will be
+    restart: unless-stopped
+    container_name: api
+    volumes:
+      - ./api:/app/api # To copy changes in the local machine to the container.
+    ports:
+      - "3000:3000" # To expose the app to the machine localhost (machine-port:container:port)
+    networks:
+      - app-network # Connect the app to the network, in this case to use the database
+    depends_on: # Build dependencies in case one containers needs another to be builded first
+      - db # To build after the database
+    env_file:
+      - .env
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME_DEV}
+      DATABASE_USER: ${DATABASE_USERNAME_DEV}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD_DEV}
+      HOST: db
+      JWT_SECRET: ${JWT_SECRET}
+
+  db:
+    image: postgres:11.5-alpine # Use the official Postgres image
+    container_name: postgres-db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME_DEV} # Set the default Postgres user
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD_DEV} # Set the default Postgres password
+      POSTGRES_DB: ${DATABASE_NAME_DEV} # Set the default Postgres database
+    ports:
+      - "5432:5432" # Map the default Postgres port to the host machine
+    networks:
+      - app-network # Connect the Postgres container to the app-network
+    volumes:
+      # To persist the data in the database we have a volume that persist after container deletion
+      # and copy the files from the container to the volume.
+      - db-volume:/var/lib/postgresql/data # Persist database data
+
+
+networks:
+  app-network: # Define the app-network network
+    driver: bridge # Use the default bridge driver
+
+volumes: # All the named volumes needed to persist data after container deletion
+  db-volume:

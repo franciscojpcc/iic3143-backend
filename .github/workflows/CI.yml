@@ -1,0 +1,63 @@
+name: Express Backend CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-and-lint:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+
+    env:
+      JWT_SECRET: "29b49f66622478017dd7dc52a3ab6886932e0fa9492f50f847710142bcfaa9b4"
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Wait for PostgreSQL to be ready
+        run: sleep 10s
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Setup PostgreSQL
+        env:
+          HOST: "localhost"
+          DB_PORT: "5432"
+          DATABASE_NAME_TEST: "test_db"
+          DATABASE_USERNAME_TEST: "postgres"
+          DATABASE_PASSWORD_TEST: "postgres"
+        run: |
+          yarn migrate-test
+          # Optionally, you can seed the database if needed:
+          # yarn sequelize db:seed:all
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        env:
+          HOST: "localhost"
+          DB_PORT: "5432"
+          DATABASE_NAME_TEST: "test_db"
+          DATABASE_USERNAME_TEST: "postgres"
+          DATABASE_PASSWORD_TEST: "postgres"
+        run: yarn test
