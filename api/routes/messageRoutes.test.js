@@ -46,15 +46,14 @@ afterAll(async () => {
 });
 
 describe('CREATE MESSAGE /', () => {
-  it('should create a new user', async () => {
-    const res = await request(app).post('/message').send({
+  it('should create a new message', async () => {
+    const res = await request(app).post('/message/').send({
       serviceRequestId: testRequest.id,
       content: 'This is a message',
       senderId: testUser.id,
     });
     expect(res.statusCode).toEqual(201);
   });
-  // Hacer lo del token aca
 });
 
 describe('GET MESSAGE BY ID /', () => {
@@ -68,5 +67,4 @@ describe('GET MESSAGE BY ID /', () => {
     expect(res.statusCode).toEqual(404);
   });
 
-  // Hacer lo del token aca
 });
