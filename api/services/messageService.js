@@ -14,7 +14,7 @@ exports.createMessage = async (messageData) => {
 };
 
 exports.getMessagesByRequestId = async (requestId) => {
-  const messages = await Message.findOne({
+  const messages = await Message.find({
     where: {
       serviceRequestId: requestId,
     },

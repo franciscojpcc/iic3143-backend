@@ -47,9 +47,10 @@ afterAll(async () => {
 
 describe('CREATE MESSAGE /', () => {
   it('should create a new user', async () => {
-    const res = await request(app).post('/message/').send({
+    const res = await request(app).post('/message').send({
       serviceRequestId: testRequest.id,
       content: 'This is a message',
+      senderId: testUser.id,
     });
     expect(res.statusCode).toEqual(201);
   });

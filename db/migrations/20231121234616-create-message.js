@@ -25,6 +25,14 @@ module.exports = {
           as: 'serviceRequestId',
         },
       },
+      senderId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'senderId',
+        },
+      },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,

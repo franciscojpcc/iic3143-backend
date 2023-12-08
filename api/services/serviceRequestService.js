@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 const { ServiceRequest, Service, User } = require('../../db/models');
 
 exports.createRequest = async (requestData) => {
@@ -117,7 +119,10 @@ exports.findRequestsByUserId = async (userId) => {
   const requestsPending = await ServiceRequest.findAll({
     where: {
       userId,
-      state: 'pending',
+      [Op.or]:  [
+        { state: 'pending' },
+        { state: 'accepted' },
+      ],
     },
     include: {
       model: Service,
@@ -131,7 +136,12 @@ exports.findRequestsByUserId = async (userId) => {
   const requestsCompleted = await ServiceRequest.findAll({
     where: {
       userId,
-      state: 'completed',
+      [Op.or]:  [
+        { state: 'rejected'},
+        { state: 'completed' },
+        { state: 'problem' },
+        { state: 'solved' }
+      ],
     },
     include: {
       model: Service,
