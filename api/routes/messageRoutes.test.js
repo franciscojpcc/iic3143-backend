@@ -66,5 +66,4 @@ describe('GET MESSAGE BY ID /', () => {
     const res = await request(app).get('/message/request/10000');
     expect(res.statusCode).toEqual(404);
   });
-
 });
