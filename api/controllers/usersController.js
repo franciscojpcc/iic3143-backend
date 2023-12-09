@@ -16,7 +16,6 @@ exports.createUser = async (req, res) => {
       };
       res.status(201).json(body);
     } else {
-      console.log('User already exists');
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {

@@ -28,7 +28,6 @@ exports.createUser = async (userData) => {
 
       return { success: true, data: newUser };
     }
-    console.log('User already exists');
     return {
       success: false,
       statusCode: 409,

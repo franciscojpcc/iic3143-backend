@@ -23,10 +23,8 @@ exports.findRequestById = async (requestId) => {
     },
   });
   if (request) {
-    console.log('Request found');
     return { success: true, data: request };
   }
-  console.log('Request not found');
   return {
     success: false,
     statusCode: 404,
@@ -37,10 +35,8 @@ exports.findRequestById = async (requestId) => {
 exports.findRequests = async () => {
   const requests = await ServiceRequest.findAll();
   if (requests) {
-    console.log('Requests found');
     return { success: true, data: requests };
   }
-  console.log('Requests not found');
   return {
     success: false,
     statusCode: 404,
@@ -153,10 +149,8 @@ exports.findRequestsByUserId = async (userId) => {
     },
   });
   if (requestsPending || requestsCompleted) {
-    console.log('Requests found');
     return { success: true, data: { requestsPending, requestsCompleted } };
   }
-  console.log('Requests not found');
   return {
     success: false,
     statusCode: 404,
@@ -196,10 +190,8 @@ exports.findRequestsByProviderId = async (supplierId) => {
     }],
   });
   if (requestsPending || requestsCompleted) {
-    console.log('Requests found');
     return { success: true, data: { requestsPending, requestsCompleted } };
   }
-  console.log('Requests not found');
   return {
     success: false,
     statusCode: 404,
