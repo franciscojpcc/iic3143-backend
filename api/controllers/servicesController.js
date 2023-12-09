@@ -47,6 +47,23 @@ exports.getServices = async (req, res) => {
   }
 };
 
+exports.getServicesByUserId = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const result = await serviceService.findServicesByUserId(userId);
+
+    if (result.success) {
+      res.status(200).json({ info: result.data });
+    } else {
+      console.error('Error getting Services information:', result.error);
+      res.status(result.statusCode).json({ message: result.message });
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
+  }
+};
+
 exports.updateServiceById = async (req, res) => {
   const serviceId = req.params.id;
   const updateService = req.body;
