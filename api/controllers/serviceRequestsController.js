@@ -86,10 +86,18 @@ exports.deleteRequestById = async (req, res) => {
 
 exports.getRequestsByUserId = async (req, res) => {
   const userId = req.params.id;
-  const page = parseInt(req.query.page, 10) || 1;
-  const size = parseInt(req.query.size, 10) || 10;
+  const pendingPage = parseInt(req.query.pendingPage, 10) || 1;
+  const pendingSize = parseInt(req.query.pendingSize, 10) || 10;
+  const completedPage = parseInt(req.query.completedPage, 10) || 1;
+  const completedSize = parseInt(req.query.completedSize, 10) || 10;
   try {
-    const result = await serviceRequestService.findRequestsByUserId(userId, page, size);
+    const result = await serviceRequestService.findRequestsByUserId(
+      userId,
+      pendingPage,
+      pendingSize,
+      completedPage,
+      completedSize,
+    );
 
     if (result.success) {
       res.status(200).json({ info: result.data });
@@ -105,9 +113,17 @@ exports.getRequestsByUserId = async (req, res) => {
 
 exports.getRequestsByProviderId = async (req, res) => {
   const providerId = req.params.id;
+  const pendingPage = parseInt(req.query.pendingPage, 10) || 1;
+  const pendingSize = parseInt(req.query.pendingSize, 10) || 10;
+  const completedPage = parseInt(req.query.completedPage, 10) || 1;
+  const completedSize = parseInt(req.query.completedSize, 10) || 10;
   try {
     const result = await serviceRequestService.findRequestsByProviderId(
       providerId,
+      pendingPage,
+      pendingSize,
+      completedPage,
+      completedSize,
     );
 
     if (result.success) {
