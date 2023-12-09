@@ -38,7 +38,7 @@ afterAll(async () => {
     try {
       await testUser.destroy();
     } catch (error) {
-      console.log("error test", error)
+      console.log('error test', error);
     }
   }
   if (testService) {

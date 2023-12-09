@@ -86,8 +86,10 @@ exports.deleteRequestById = async (req, res) => {
 
 exports.getRequestsByUserId = async (req, res) => {
   const userId = req.params.id;
+  const page = parseInt(req.query.page, 10) || 1;
+  const size = parseInt(req.query.size, 10) || 10;
   try {
-    const result = await serviceRequestService.findRequestsByUserId(userId);
+    const result = await serviceRequestService.findRequestsByUserId(userId, page, size);
 
     if (result.success) {
       res.status(200).json({ info: result.data });

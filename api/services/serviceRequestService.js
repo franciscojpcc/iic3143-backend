@@ -111,12 +111,8 @@ exports.deleteRequestById = async (requestId) => {
   }
 };
 
-exports.findRequestsByUserId = async (userId) => {
-  const page = parseInt(req.query.page) || 1;
-  const size = parseInt(req.query.size) || 10;
+exports.findRequestsByUserId = async (userId, page, size) => {
   const offset = (page - 1) * size;
-
-
 
   const requestsPending = await ServiceRequest.findAndCountAll({
     where: {
@@ -126,9 +122,9 @@ exports.findRequestsByUserId = async (userId) => {
         { state: 'accepted' },
       ],
     },
-    offset: offset,
+    offset,
     limit: size,
-    order: [['date', "DESC"]],
+    order: [['date', 'DESC']],
     include: {
       model: Service,
       as: 'service',
@@ -148,9 +144,9 @@ exports.findRequestsByUserId = async (userId) => {
         { state: 'solved' },
       ],
     },
-    offset: offset,
+    offset,
     limit: size,
-    order: [['date', "DESC"]],
+    order: [['date', 'DESC']],
     include: {
       model: Service,
       as: 'service',
@@ -170,11 +166,18 @@ exports.findRequestsByUserId = async (userId) => {
   };
 };
 
-exports.findRequestsByProviderId = async (supplierId) => {
-  const requestsPending = await ServiceRequest.findAll({
+exports.findRequestsByProviderId = async (supplierId, page, size) => {
+  const offset = (page - 1) * size;
+  const requestsPending = await ServiceRequest.findAllAndCount({
     where: {
-      state: 'pending',
+      [Op.or]: [
+        { state: 'pending' },
+        { state: 'accepted' },
+      ],
     },
+    offset,
+    limit: size,
+    order: [['date', 'DESC']],
     include: [{
       model: Service,
       as: 'service',
@@ -186,10 +189,18 @@ exports.findRequestsByProviderId = async (supplierId) => {
       as: 'user',
     }],
   });
-  const requestsCompleted = await ServiceRequest.findAll({
+  const requestsCompleted = await ServiceRequest.findAllAndCount({
     where: {
-      state: 'completed',
+      [Op.or]: [
+        { state: 'rejected' },
+        { state: 'completed' },
+        { state: 'problem' },
+        { state: 'solved' },
+      ],
     },
+    offset,
+    limit: size,
+    order: [['date', 'DESC']],
     include: [{
       model: Service,
       as: 'service',
