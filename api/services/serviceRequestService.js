@@ -111,8 +111,15 @@ exports.deleteRequestById = async (requestId) => {
   }
 };
 
-exports.findRequestsByUserId = async (userId, page, size) => {
-  const offset = (page - 1) * size;
+exports.findRequestsByUserId = async (
+  userId,
+  pendingPage,
+  pendingSize,
+  completedPage,
+  completedSize,
+) => {
+  const pendingOffset = (pendingPage - 1) * pendingSize;
+  const completedOffset = (completedPage - 1) * completedSize;
 
   const requestsPending = await ServiceRequest.findAndCountAll({
     where: {
@@ -122,8 +129,8 @@ exports.findRequestsByUserId = async (userId, page, size) => {
         { state: 'accepted' },
       ],
     },
-    offset,
-    limit: size,
+    offset: pendingOffset,
+    limit: pendingSize,
     order: [['date', 'DESC']],
     include: {
       model: Service,
@@ -144,8 +151,8 @@ exports.findRequestsByUserId = async (userId, page, size) => {
         { state: 'solved' },
       ],
     },
-    offset,
-    limit: size,
+    offset: completedOffset,
+    limit: completedSize,
     order: [['date', 'DESC']],
     include: {
       model: Service,
@@ -166,17 +173,25 @@ exports.findRequestsByUserId = async (userId, page, size) => {
   };
 };
 
-exports.findRequestsByProviderId = async (supplierId, page, size) => {
-  const offset = (page - 1) * size;
-  const requestsPending = await ServiceRequest.findAllAndCount({
+exports.findRequestsByProviderId = async (
+  supplierId,
+  pendingPage,
+  pendingSize,
+  completedPage,
+  completedSize,
+) => {
+  const pendingOffset = (pendingPage - 1) * pendingSize;
+  const completedOffset = (completedPage - 1) * completedSize;
+
+  const requestsPending = await ServiceRequest.findAndCountAll({
     where: {
       [Op.or]: [
         { state: 'pending' },
         { state: 'accepted' },
       ],
     },
-    offset,
-    limit: size,
+    offset: pendingOffset,
+    limit: pendingSize,
     order: [['date', 'DESC']],
     include: [{
       model: Service,
@@ -189,7 +204,7 @@ exports.findRequestsByProviderId = async (supplierId, page, size) => {
       as: 'user',
     }],
   });
-  const requestsCompleted = await ServiceRequest.findAllAndCount({
+  const requestsCompleted = await ServiceRequest.findAndCountCount({
     where: {
       [Op.or]: [
         { state: 'rejected' },
@@ -198,8 +213,8 @@ exports.findRequestsByProviderId = async (supplierId, page, size) => {
         { state: 'solved' },
       ],
     },
-    offset,
-    limit: size,
+    offset: completedOffset,
+    limit: completedSize,
     order: [['date', 'DESC']],
     include: [{
       model: Service,
