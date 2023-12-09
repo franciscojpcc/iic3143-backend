@@ -41,6 +41,22 @@ exports.findServices = async () => {
   };
 };
 
+exports.findServicesByUserId = async (userId) => {
+  const services = await Service.findAll({
+    where: {
+      supplierId: userId,
+    },
+  });
+  if (services.length > 0) {
+    return { success: true, data: services };
+  }
+  return {
+    success: false,
+    statusCode: 404,
+    message: 'Services not found',
+  };
+};
+
 exports.updateServiceById = async (serviceId, newService) => {
   try {
     const service = await Service.findOne({

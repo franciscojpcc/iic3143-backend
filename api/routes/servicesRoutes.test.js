@@ -62,6 +62,15 @@ describe('GET ALL SERVICES /', () => {
   // Hacer lo del token aca
 });
 
+describe('GET SERVICES BY USER ID /', () => {
+  it('should get services by user id', async () => {
+    const res = await request(app).get(`/services/user/${testUser.id}`);
+    expect(res.statusCode).toEqual(200);
+  });
+
+  // Hacer lo del token aca
+});
+
 // PUT service
 describe('PUT SERVICE /', () => {
   it('should update a service', async () => {
