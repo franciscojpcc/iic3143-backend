@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       Message.belongsTo(models.User, {
         foreignKey: 'senderId',
         as: 'sender',
+        onDelete: 'CASCADE',
       });
     }
   }

@@ -16,10 +16,10 @@ exports.createUser = async (req, res) => {
       };
       res.status(201).json(body);
     } else {
+      console.log('Error creating user:', result);
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error('Error creating user:', error);
     res.status(500).json({ message: 'Error creating user' });
   }
 };

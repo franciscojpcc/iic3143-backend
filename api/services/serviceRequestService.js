@@ -112,7 +112,13 @@ exports.deleteRequestById = async (requestId) => {
 };
 
 exports.findRequestsByUserId = async (userId) => {
-  const requestsPending = await ServiceRequest.findAll({
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 10;
+  const offset = (page - 1) * size;
+
+
+
+  const requestsPending = await ServiceRequest.findAndCountAll({
     where: {
       userId,
       [Op.or]: [
@@ -120,6 +126,9 @@ exports.findRequestsByUserId = async (userId) => {
         { state: 'accepted' },
       ],
     },
+    offset: offset,
+    limit: size,
+    order: [['date', "DESC"]],
     include: {
       model: Service,
       as: 'service',
@@ -129,7 +138,7 @@ exports.findRequestsByUserId = async (userId) => {
       },
     },
   });
-  const requestsCompleted = await ServiceRequest.findAll({
+  const requestsCompleted = await ServiceRequest.findAndCountAll({
     where: {
       userId,
       [Op.or]: [
@@ -139,6 +148,9 @@ exports.findRequestsByUserId = async (userId) => {
         { state: 'solved' },
       ],
     },
+    offset: offset,
+    limit: size,
+    order: [['date', "DESC"]],
     include: {
       model: Service,
       as: 'service',
