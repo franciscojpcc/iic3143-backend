@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'service',
         onDelete: 'CASCADE',
       });
+      ServiceRequest.hasMany(models.Message, {
+        foreignKey: 'serviceRequestId',
+        as: 'messages',
+        onDelete: 'CASCADE',
+      });
     }
   }
   ServiceRequest.init({

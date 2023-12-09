@@ -5,7 +5,6 @@ exports.createService = async (serviceData) => {
     const newService = await Service.create(serviceData);
     return { success: true, data: newService };
   } catch (error) {
-    console.error('Error creating the service:', error);
     return {
       success: false,
       statusCode: 500,
@@ -21,10 +20,8 @@ exports.findServiceById = async (serviceId) => {
     },
   });
   if (service) {
-    console.log('Service found');
     return { success: true, data: service };
   }
-  console.log('Service not found');
   return {
     success: false,
     statusCode: 404,
@@ -35,10 +32,8 @@ exports.findServiceById = async (serviceId) => {
 exports.findServices = async () => {
   const services = await Service.findAll();
   if (services) {
-    console.log('Services found');
     return { success: true, data: services };
   }
-  console.log('Services not found');
   return {
     success: false,
     statusCode: 404,
@@ -73,7 +68,6 @@ exports.updateServiceById = async (serviceId, newService) => {
       message: 'Service not found',
     };
   } catch (error) {
-    console.error('Error updating service:', error);
     return {
       success: false,
       statusCode: 500,
@@ -105,7 +99,6 @@ exports.deleteServiceById = async (serviceId) => {
       message: 'service not found',
     };
   } catch (error) {
-    console.error('Error deleting service:', error);
     return {
       success: false,
       statusCode: 500,

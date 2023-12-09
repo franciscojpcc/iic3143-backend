@@ -8,11 +8,9 @@ exports.createService = async (req, res) => {
     if (result.success) {
       res.status(201).json(result.data);
     } else {
-      console.log('Service already exists');
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error('Error creating service:', error);
     res.status(500).json({ message: 'Error creating service' });
   }
 };

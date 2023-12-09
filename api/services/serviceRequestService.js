@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const { ServiceRequest, Service, User } = require('../../db/models');
 
 exports.createRequest = async (requestData) => {
@@ -21,10 +23,8 @@ exports.findRequestById = async (requestId) => {
     },
   });
   if (request) {
-    console.log('Request found');
     return { success: true, data: request };
   }
-  console.log('Request not found');
   return {
     success: false,
     statusCode: 404,
@@ -35,10 +35,8 @@ exports.findRequestById = async (requestId) => {
 exports.findRequests = async () => {
   const requests = await ServiceRequest.findAll();
   if (requests) {
-    console.log('Requests found');
     return { success: true, data: requests };
   }
-  console.log('Requests not found');
   return {
     success: false,
     statusCode: 404,
@@ -113,12 +111,20 @@ exports.deleteRequestById = async (requestId) => {
   }
 };
 
-exports.findRequestsByUserId = async (userId) => {
-  const requestsPending = await ServiceRequest.findAll({
+exports.findRequestsByUserId = async (userId, page, size) => {
+  const offset = (page - 1) * size;
+
+  const requestsPending = await ServiceRequest.findAndCountAll({
     where: {
       userId,
-      state: 'pending',
+      [Op.or]: [
+        { state: 'pending' },
+        { state: 'accepted' },
+      ],
     },
+    offset,
+    limit: size,
+    order: [['date', 'DESC']],
     include: {
       model: Service,
       as: 'service',
@@ -128,11 +134,19 @@ exports.findRequestsByUserId = async (userId) => {
       },
     },
   });
-  const requestsCompleted = await ServiceRequest.findAll({
+  const requestsCompleted = await ServiceRequest.findAndCountAll({
     where: {
       userId,
-      state: 'completed',
+      [Op.or]: [
+        { state: 'rejected' },
+        { state: 'completed' },
+        { state: 'problem' },
+        { state: 'solved' },
+      ],
     },
+    offset,
+    limit: size,
+    order: [['date', 'DESC']],
     include: {
       model: Service,
       as: 'service',
@@ -143,10 +157,8 @@ exports.findRequestsByUserId = async (userId) => {
     },
   });
   if (requestsPending || requestsCompleted) {
-    console.log('Requests found');
     return { success: true, data: { requestsPending, requestsCompleted } };
   }
-  console.log('Requests not found');
   return {
     success: false,
     statusCode: 404,
@@ -154,11 +166,18 @@ exports.findRequestsByUserId = async (userId) => {
   };
 };
 
-exports.findRequestsByProviderId = async (supplierId) => {
-  const requestsPending = await ServiceRequest.findAll({
+exports.findRequestsByProviderId = async (supplierId, page, size) => {
+  const offset = (page - 1) * size;
+  const requestsPending = await ServiceRequest.findAllAndCount({
     where: {
-      state: 'pending',
+      [Op.or]: [
+        { state: 'pending' },
+        { state: 'accepted' },
+      ],
     },
+    offset,
+    limit: size,
+    order: [['date', 'DESC']],
     include: [{
       model: Service,
       as: 'service',
@@ -170,10 +189,18 @@ exports.findRequestsByProviderId = async (supplierId) => {
       as: 'user',
     }],
   });
-  const requestsCompleted = await ServiceRequest.findAll({
+  const requestsCompleted = await ServiceRequest.findAllAndCount({
     where: {
-      state: 'completed',
+      [Op.or]: [
+        { state: 'rejected' },
+        { state: 'completed' },
+        { state: 'problem' },
+        { state: 'solved' },
+      ],
     },
+    offset,
+    limit: size,
+    order: [['date', 'DESC']],
     include: [{
       model: Service,
       as: 'service',
@@ -186,10 +213,8 @@ exports.findRequestsByProviderId = async (supplierId) => {
     }],
   });
   if (requestsPending || requestsCompleted) {
-    console.log('Requests found');
     return { success: true, data: { requestsPending, requestsCompleted } };
   }
-  console.log('Requests not found');
   return {
     success: false,
     statusCode: 404,

@@ -8,11 +8,9 @@ exports.createRequest = async (req, res) => {
     if (result.success) {
       res.status(201).json(result.data);
     } else {
-      console.log('Service Request already exists');
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error('Error creating service request:', error);
     res.status(500).json({ message: 'Error creating service request' });
   }
 };
@@ -88,8 +86,10 @@ exports.deleteRequestById = async (req, res) => {
 
 exports.getRequestsByUserId = async (req, res) => {
   const userId = req.params.id;
+  const page = parseInt(req.query.page, 10) || 1;
+  const size = parseInt(req.query.size, 10) || 10;
   try {
-    const result = await serviceRequestService.findRequestsByUserId(userId);
+    const result = await serviceRequestService.findRequestsByUserId(userId, page, size);
 
     if (result.success) {
       res.status(200).json({ info: result.data });

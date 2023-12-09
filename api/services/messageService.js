@@ -14,12 +14,12 @@ exports.createMessage = async (messageData) => {
 };
 
 exports.getMessagesByRequestId = async (requestId) => {
-  const messages = await Message.findOne({
+  const messages = await Message.findAll({
     where: {
       serviceRequestId: requestId,
     },
   });
-  if (messages) {
+  if (messages.length > 0) {
     return { success: true, data: messages };
   }
   return {

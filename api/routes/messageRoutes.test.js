@@ -35,7 +35,11 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (testUser) {
-    await testUser.destroy();
+    try {
+      await testUser.destroy();
+    } catch (error) {
+      console.log('error test', error);
+    }
   }
   if (testService) {
     await testService.destroy();
@@ -46,14 +50,14 @@ afterAll(async () => {
 });
 
 describe('CREATE MESSAGE /', () => {
-  it('should create a new user', async () => {
+  it('should create a new message', async () => {
     const res = await request(app).post('/message/').send({
       serviceRequestId: testRequest.id,
       content: 'This is a message',
+      senderId: testUser.id,
     });
     expect(res.statusCode).toEqual(201);
   });
-  // Hacer lo del token aca
 });
 
 describe('GET MESSAGE BY ID /', () => {
@@ -66,6 +70,4 @@ describe('GET MESSAGE BY ID /', () => {
     const res = await request(app).get('/message/request/10000');
     expect(res.statusCode).toEqual(404);
   });
-
-  // Hacer lo del token aca
 });
