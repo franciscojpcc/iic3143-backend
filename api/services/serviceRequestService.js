@@ -204,7 +204,7 @@ exports.findRequestsByProviderId = async (
       as: 'user',
     }],
   });
-  const requestsCompleted = await ServiceRequest.findAndCountCount({
+  const requestsCompleted = await ServiceRequest.findAndCountAll({
     where: {
       [Op.or]: [
         { state: 'rejected' },
