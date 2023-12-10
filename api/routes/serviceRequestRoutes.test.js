@@ -1,10 +1,11 @@
 const request = require('supertest');
 const app = require('../app');
-const { User, Service } = require('../../db/models');
+const { User, Service, ServiceRequest } = require('../../db/models');
 
 let testUser;
 let testService;
 let createdServiceRequest;
+let testRequestWithProblem;
 beforeAll(async () => {
   testUser = await User.create({
     email: 'test3@test.com',
@@ -24,6 +25,13 @@ beforeAll(async () => {
     qualification: 4,
     description: 'requesting',
   });
+  testRequestWithProblem = await ServiceRequest.create({
+    userId: testUser.id,
+    serviceId: testService.id,
+    name: 'test',
+    date: new Date(),
+    state: 'problem',
+  });
 });
 
 afterAll(async () => {
@@ -32,6 +40,9 @@ afterAll(async () => {
   }
   if (testService) {
     await testService.destroy();
+  }
+  if (testRequestWithProblem) {
+    await testRequestWithProblem.destroy();
   }
 });
 
@@ -103,4 +114,11 @@ describe('DELETE REQUEST /', () => {
   });
 
   // Hacer lo del token aca
+});
+
+describe('GET REQUESTS WITH PROBLEMS /', () => {
+  it('should get all requests with problems', async () => {
+    const res = await request(app).get('/serviceRequest/problem');
+    expect(res.statusCode).toEqual(200);
+  });
 });

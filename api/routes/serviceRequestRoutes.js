@@ -4,6 +4,7 @@ const serviceRequestController = require('../controllers/serviceRequestsControll
 const router = express.Router();
 
 router.post('/', serviceRequestController.createRequest);
+router.get('/problem', serviceRequestController.getRequestsWithProblem);
 router.get('/:id', serviceRequestController.getRequestById);
 router.get('/', serviceRequestController.getRequests);
 router.put('/:id', serviceRequestController.updateRequestById);
