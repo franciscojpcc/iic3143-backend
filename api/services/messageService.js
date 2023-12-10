@@ -19,7 +19,7 @@ exports.getMessagesByRequestId = async (requestId) => {
       serviceRequestId: requestId,
     },
   });
-  if (messages > 0) {
+  if (messages) {
     return { success: true, data: messages };
   }
   return {
