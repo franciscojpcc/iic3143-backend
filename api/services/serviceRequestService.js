@@ -236,3 +236,31 @@ exports.findRequestsByProviderId = async (
     message: 'requests not found',
   };
 };
+
+exports.findRequestsWithProblem = async () => {
+  const requests = await ServiceRequest.findAll({
+    where: {
+      state: 'problem',
+    },
+    order: [['date', 'DESC']],
+    include: [{
+      model: Service,
+      as: 'service',
+      include: [{
+        model: User,
+        as: 'supplier',
+      }],
+    }, {
+      model: User,
+      as: 'user',
+    }],
+  });
+  if (requests.length > 0) {
+    return { success: true, data: requests };
+  }
+  return {
+    success: false,
+    statusCode: 404,
+    message: 'requests not found',
+  };
+};

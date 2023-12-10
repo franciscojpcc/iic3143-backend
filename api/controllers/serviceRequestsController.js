@@ -137,3 +137,24 @@ exports.getRequestsByProviderId = async (req, res) => {
     res.status(500).json({ message: 'Unexpected error' });
   }
 };
+
+exports.getRequestsWithProblem = async (req, res) => {
+  const page = parseInt(req.query.page, 10) || 1;
+  const size = parseInt(req.query.size, 10) || 10;
+  try {
+    const result = await serviceRequestService.findRequestsWithProblem();
+
+    if (result.success) {
+      const offset = (page - 1) * size;
+      const requests = result.data.slice(offset, offset + size);
+      console.log(requests);
+      res.status(200).json({ info: requests, count: result.data.length });
+    } else {
+      console.error('Error getting Service request information:', result.error);
+      res.status(result.statusCode).json({ message: result.message });
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
+  }
+};
