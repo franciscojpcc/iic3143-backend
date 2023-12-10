@@ -28,7 +28,7 @@ exports.findRequestById = async (requestId) => {
     }, {
       association: 'service',
       attributes: ['name', 'description', 'fee', 'category'],
-    }]
+    }],
   });
   if (request) {
     return { success: true, data: request };
