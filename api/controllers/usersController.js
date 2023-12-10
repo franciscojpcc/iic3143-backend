@@ -8,7 +8,6 @@ exports.createUser = async (req, res) => {
     const result = await userService.createUser(userData);
 
     if (result.success) {
-      // Generate token and return it to the client
       const token = await generateToken(result.data);
       const body = {
         access_token: token,

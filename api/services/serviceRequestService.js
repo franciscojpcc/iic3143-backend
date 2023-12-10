@@ -18,9 +18,17 @@ exports.createRequest = async (requestData) => {
 
 exports.findRequestById = async (requestId) => {
   const request = await ServiceRequest.findOne({
-    where: {
-      id: requestId,
-    },
+    where: { id: requestId },
+    include: [{
+      association: 'user',
+      attributes: ['name', 'email', 'phone', 'address'],
+    }, {
+      association: 'provider',
+      attributes: ['name', 'email', 'phone'],
+    }, {
+      association: 'service',
+      attributes: ['name', 'description', 'fee', 'category'],
+    }],
   });
   if (request) {
     return { success: true, data: request };
