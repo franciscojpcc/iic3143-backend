@@ -25,10 +25,10 @@ exports.findRequestById = async (requestId) => {
     }, {
       association: 'service',
       attributes: ['name', 'description', 'fee', 'category'],
-      include : [{
+      include: [{
         association: 'supplier',
         attributes: ['name', 'email', 'phone'],
-      }]
+      }],
     }],
   });
   if (request) {
