@@ -23,11 +23,12 @@ exports.findRequestById = async (requestId) => {
       association: 'user',
       attributes: ['name', 'email', 'phone', 'address'],
     }, {
-      association: 'provider',
-      attributes: ['name', 'email', 'phone'],
-    }, {
       association: 'service',
       attributes: ['name', 'description', 'fee', 'category'],
+      include : [{
+        association: 'supplier',
+        attributes: ['name', 'email', 'phone'],
+      }]
     }],
   });
   if (request) {
