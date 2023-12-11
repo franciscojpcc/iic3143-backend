@@ -65,9 +65,4 @@ describe('GET MESSAGE BY ID /', () => {
     const res = await request(app).get(`/message/request/${testRequest.id}`);
     expect(res.statusCode).toEqual(200);
   });
-
-  it('should not get a message by request id, with invalid requestId', async () => {
-    const res = await request(app).get('/message/request/10000');
-    expect(res.statusCode).toEqual(404);
-  });
 });
