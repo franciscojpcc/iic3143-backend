@@ -8,11 +8,9 @@ exports.createService = async (req, res) => {
     if (result.success) {
       res.status(201).json(result.data);
     } else {
-      console.log('Service already exists');
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error('Error creating service:', error);
     res.status(500).json({ message: 'Error creating service' });
   }
 };
@@ -36,6 +34,23 @@ exports.getServiceById = async (req, res) => {
 exports.getServices = async (req, res) => {
   try {
     const result = await serviceService.findServices();
+
+    if (result.success) {
+      res.status(200).json({ info: result.data });
+    } else {
+      console.error('Error getting Services information:', result.error);
+      res.status(result.statusCode).json({ message: result.message });
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    res.status(500).json({ message: 'Unexpected error' });
+  }
+};
+
+exports.getServicesByUserId = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const result = await serviceService.findServicesByUserId(userId);
 
     if (result.success) {
       res.status(200).json({ info: result.data });

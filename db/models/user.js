@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.ServiceRequest, {
         foreignKey: 'userId',
       });
+      User.hasMany(models.Message, {
+        foreignKey: 'senderId',
+      });
     }
 
     async checkPassword(password) {

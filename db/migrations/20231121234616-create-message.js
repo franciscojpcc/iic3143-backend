@@ -25,6 +25,15 @@ module.exports = {
           as: 'serviceRequestId',
         },
       },
+      senderId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'senderId',
+        },
+      },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,

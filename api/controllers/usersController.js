@@ -8,7 +8,6 @@ exports.createUser = async (req, res) => {
     const result = await userService.createUser(userData);
 
     if (result.success) {
-      // Generate token and return it to the client
       const token = await generateToken(result.data);
       const body = {
         access_token: token,
@@ -16,11 +15,10 @@ exports.createUser = async (req, res) => {
       };
       res.status(201).json(body);
     } else {
-      console.log('User already exists');
+      console.log('Error creating user:', result);
       res.status(result.statusCode).json({ message: result.message });
     }
   } catch (error) {
-    console.error('Error creating user:', error);
     res.status(500).json({ message: 'Error creating user' });
   }
 };
